@@ -1,5 +1,8 @@
 
 def losers(winners, winners_update):
+    """ returns list of indicies of elements in winners for elements that are not in winners_update
+        winners: list of indicies in arr
+        winners_update: list of ints, a subset of winners"""
     loosers = []
     c = 0
     for a in range(len(winners)):
@@ -10,8 +13,10 @@ def losers(winners, winners_update):
     return loosers
 
 def contiguous_substring(arr):
-    out = [1] * len(arr) # innitializing every output to 1 because every element in input has a len one solution
-    winners = []    #a list of i indicies for winning numbers, arr[i]
+    """ input: list of distinct integers
+        output: list of contiguous substring begginging at each index"""
+    out = [1] * len(arr)    # innitializing every output to 1 because every element in input has a len one solution
+    winners = []    # a list of indicies for winning numbers, arr[i]
     for i in range(1,len(arr)):
         if arr[i] < arr[i-1]:
             if len(winners) == 0 or winners[-1] != i-1:
@@ -20,20 +25,20 @@ def contiguous_substring(arr):
 
     while len(winners) > 1:
         winners_update = []
-        for j in range(1,len(winners)): #update winners by walking through it once
+        for j in range(1,len(winners)): # update winners by walking through it once
             if arr[winners[j]] < arr[winners[j-1]]: 
                 if len(winners_update) == 0 or winners_update[-1] != winners[j-1]:
                     winners_update.append(winners[j-1])
             else:winners_update.append(winners[j])
 
-        loosers = losers(winners, winners_update) #this wallks through winners once to generate loosers
-        for l in loosers: #generate output for each loser
+        loosers = losers(winners, winners_update)   # this wallks through winners once to generate loosers
+        for l in loosers:   # generate output for each loser
             if l-1 >= 0: out[winners[l]] += (winners[l] - winners[l-1] -1)
             else: out[winners[l]] += winners[l]
             if l+1 < len(winners): out[winners[l]] += (winners[l+1] - winners[l] - 1)
             else: out[winners[l]] += len(arr) -1 - winners[l]
         winners = winners_update
-    out[winners[0]] = len(arr) #this big guy is our global maximum, who's output is always the length of the input list
+    out[winners[0]] = len(arr) # this big guy is our global maximum, who's output number is always the length of the input list
     return out
 
 def test():
